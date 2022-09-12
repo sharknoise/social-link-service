@@ -1,0 +1,29 @@
+{{ imports }}
+from fastapi import Depends
+from ..external.postgres import get_engine, Engine
+from .main import app
+{% for operation in operations %}
+from ..api.v1.communications.core import {{ operation.function_name }}_controller
+{% endfor %}
+
+
+{% for operation in operations %}
+@app.{{ operation.type }}('{{ operation.snake_case_path }}',
+{% if operation.response -%}response_model={{ operation.response }},{%- endif -%}
+{% if operation.tags -%}tags={{ operation.tags }},{%- endif -%}
+{% if operation.summary -%}summary="{{operation.summary}}",{%- endif -%}
+
+)
+
+async def {{ operation.function_name }}_view({% if operation.snake_case_arguments %}{{ operation.snake_case_arguments }}, {% endif -%}engine: Engine = Depends(get_engine)) -> {{ operation.response }}:
+    {%- if operation.description %}
+    """
+    {{ operation.description }}
+    """
+    {%- endif %}
+
+    return await {{ operation.function_name }}_controller(
+        ({% if operation.snake_case_arguments -%}{{ operation.snake_case_arguments.split(":")[0] }},{%- endif -%}
+        engine)
+    )
+{% endfor %}

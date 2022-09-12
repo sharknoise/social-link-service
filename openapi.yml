@@ -1,0 +1,102 @@
+openapi: 3.0.0
+info:
+  version: 0.1.0
+  title: Social links service
+  description: ''
+paths:
+  /api/v1/communications/send:
+    post:
+      summary: 'Отправить информацию о факте коммуникации'
+      operationId: sendCommunication
+      tags:
+        - Communications
+      requestBody:
+        required: true
+        description: 'Все участники коммуникации'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Communication'
+      responses:
+        '200':
+          description: 'Данные приняты'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendCommunicationResponse'
+  '/api/v1/communications':
+    get:
+      summary: Получить гиперграф социальных связей
+      operationId: getSocialGraph
+      tags:
+        - Communications
+      responses:
+        '200':
+          description: 'Гиперграф социальных связей на основе коммуникаций'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SocialGraph'
+components:
+  schemas:
+    Communication:
+      title: Communication
+      type: object
+      properties:
+        user_ids:
+          $ref: '#/components/schemas/UserIDs'
+      required:
+        - user_ids
+    UserIDs:
+      title: UserIDs
+      type: array
+      items:
+        type: integer
+    SocialGraph:
+      title: SocialGraph
+      type: object
+      required:
+        - social_links
+        - statistics
+      properties:
+        social_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialLink'
+        statistics:
+          $ref: '#/components/schemas/Statistics'
+    SocialLink:
+      type: object
+      title: SocialLink
+      properties:
+        user_ids:
+          $ref: '#/components/schemas/UserIDs'
+        communication_count:
+          type: integer
+      required:
+        - user_ids
+        - communication_count
+    SendCommunicationResponse:
+      title: SendCommunicationResponse
+      type: object
+      required:
+        - communication_id
+      properties:
+        communication_id:
+          type: integer
+    Statistics:
+      title: Statistics
+      type: object
+      required:
+        - minimum_communication_count
+        - average_communication_count
+        - maximum_communication_count
+      properties:
+        minimum_communication_count:
+          type: integer
+        average_communication_count:
+          type: integer
+        maximum_communication_count:
+          type: integer
+tags:
+  - name: Communications
