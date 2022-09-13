@@ -24,6 +24,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SendCommunicationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   '/api/v1/communications':
     get:
       summary: Получить гиперграф социальных связей
@@ -47,6 +53,7 @@ components:
           type: array
           items:
             type: integer
+          minItems: 2
       required:
         - user_ids
     SocialGraph:
@@ -97,5 +104,33 @@ components:
           type: number
         maximum_communication_count:
           type: integer
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            type: string
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
 tags:
   - name: Communications
