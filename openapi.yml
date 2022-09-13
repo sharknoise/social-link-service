@@ -44,14 +44,11 @@ components:
       type: object
       properties:
         user_ids:
-          $ref: '#/components/schemas/UserIDs'
+          type: array
+          items:
+            type: integer
       required:
         - user_ids
-    UserIDs:
-      title: UserIDs
-      type: array
-      items:
-        type: integer
     SocialGraph:
       title: SocialGraph
       type: object
@@ -70,7 +67,9 @@ components:
       title: SocialLink
       properties:
         user_ids:
-          $ref: '#/components/schemas/UserIDs'
+          type: array
+          items:
+            type: integer
         communication_count:
           type: integer
       required:
@@ -95,7 +94,7 @@ components:
         minimum_communication_count:
           type: integer
         average_communication_count:
-          type: integer
+          type: number
         maximum_communication_count:
           type: integer
 tags:

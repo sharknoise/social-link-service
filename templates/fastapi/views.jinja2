@@ -23,7 +23,7 @@ async def {{ operation.function_name }}_view({% if operation.snake_case_argument
     {%- endif %}
 
     return await {{ operation.function_name }}_controller(
-        ({% if operation.snake_case_arguments -%}{{ operation.snake_case_arguments.split(":")[0] }},{%- endif -%}
-        engine)
+        {% if operation.snake_case_arguments -%}{{ operation.snake_case_arguments.split(":")[0] }},{%- endif -%}
+        engine
     )
 {% endfor %}
