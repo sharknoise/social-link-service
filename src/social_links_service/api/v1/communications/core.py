@@ -21,6 +21,8 @@ from ....db.sql_models import User, UserCommunication
 async def send_communication_controller(
     body: Communication, engine: Engine
 ) -> SendCommunicationResponse:
+    """Save communication data to DB, return communication id."""
+
     async with engine.session() as session:
         logger.info(f"Connecting to '{settings.postgres_database}' DB.")
         db_communication = DBCommunication()
@@ -40,9 +42,11 @@ async def send_communication_controller(
 
 
 async def get_social_graph_controller(engine: Engine) -> SocialGraph:
-    async with engine.session() as session:
-        communication_counts = defaultdict(lambda: 0)
+    """Get communication data from DB, calculate values to build a social graph."""
 
+    communication_counts = defaultdict(lambda: 0)
+
+    async with engine.session() as session:
         logger.info(f"Connecting to '{settings.postgres_database}' DB.")
         results = await session.execute(select(DBCommunication))
         for communication in results.scalars().all():
@@ -56,11 +60,13 @@ async def get_social_graph_controller(engine: Engine) -> SocialGraph:
                 user_communication.user_id for user_communication in user_communications
             )
             communication_counts[user_ids] += 1
+
     social_links = []
     for user_ids, communication_count in communication_counts.items():
         social_links.append(
             SocialLink(user_ids=user_ids, communication_count=communication_count)
         )
+
     if communication_counts:
         minimum_communication_count = min(communication_counts.values())
         maximum_communication_count = max(communication_counts.values())

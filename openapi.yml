@@ -12,7 +12,7 @@ paths:
         - Communications
       requestBody:
         required: true
-        description: 'Все участники коммуникации'
+        description: 'Детали коммуникации. В текущей версии - только id участников (минимум двое)'
         content:
           application/json:
             schema:
@@ -25,7 +25,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SendCommunicationResponse'
         '422':
-          description: Validation Error
+          description: 'Данные невалидные'
           content:
             application/json:
               schema:
@@ -38,7 +38,7 @@ paths:
         - Communications
       responses:
         '200':
-          description: 'Гиперграф социальных связей на основе коммуникаций'
+          description: 'Гиперграф успешно построен'
           content:
             application/json:
               schema:
@@ -50,6 +50,7 @@ components:
       type: object
       properties:
         user_ids:
+          description: 'Участники коммуникации (минимум двое)'
           type: array
           items:
             type: integer
@@ -58,6 +59,7 @@ components:
         - user_ids
     SocialGraph:
       title: SocialGraph
+      description: 'Гиперграф социальных связей на основе коммуникаций'
       type: object
       required:
         - social_links
