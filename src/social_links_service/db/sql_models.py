@@ -8,6 +8,7 @@ class User(SQLModel, table=True):
     """
 
     __tablename__: str = "users"
+    __table_args__ = {"extend_existing": True}
     id: int = sql_field(
         primary_key=True,
     )
@@ -19,6 +20,7 @@ class Communication(SQLModel, table=True):
     """
 
     __tablename__: str = "communications"
+    __table_args__ = {"extend_existing": True}
     id: int = sql_field(
         primary_key=True,
     )
@@ -30,6 +32,7 @@ class UserCommunication(SQLModel, table=True):
     """
 
     __tablename__: str = "users_communications"
+    __table_args__ = {"extend_existing": True}
     id: int = sql_field(
         primary_key=True,
     )
