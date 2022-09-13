@@ -16,7 +16,6 @@ RUN poetry install --no-dev
 
 COPY src src
 ENV PYTHONPATH "${PYTHONPATH}:/src/"
-COPY scripts scripts
 
 
 EXPOSE 8000

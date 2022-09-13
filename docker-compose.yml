@@ -12,21 +12,22 @@ services:
       - db
     restart: always
     networks:
-      - local
+      - social
   db:
-    image: "postgres"
-    # volumes:
-    #   - ./data/db:/var/lib/postgresql/data
-    # ports:
-    #   - "6432:6432"
+    image: postgres:14.0
     environment:
-      - POSTGRES_USER="test_user"
-      - POSTGRES_PASSWORD="test"
-      - POSTGRES_DATABASE="test"
+      POSTGRES_USER: 'test'
+      POSTGRES_PASSWORD: 'test'
+      POSTGRES_DATABASE: 'test'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
     networks:
-      - local
+      - social
 
 networks:
-  local:
+  social:
     driver: bridge
-    name: compose-network
