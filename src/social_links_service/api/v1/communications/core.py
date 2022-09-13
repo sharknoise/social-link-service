@@ -61,12 +61,20 @@ async def get_social_graph_controller(engine: Engine) -> SocialGraph:
         social_links.append(
             SocialLink(user_ids=user_ids, communication_count=communication_count)
         )
+    if communication_counts:
+        minimum_communication_count = min(communication_counts.values())
+        maximum_communication_count = max(communication_counts.values())
+        average_communication_count = mean(communication_counts.values())
+    else:
+        minimum_communication_count = 0
+        maximum_communication_count = 0
+        average_communication_count = 0
 
     return SocialGraph(
         social_links=social_links,
         statistics=Statistics(
-            minimum_communication_count=min(communication_counts.values()),
-            maximum_communication_count=max(communication_counts.values()),
-            average_communication_count=mean(communication_counts.values()),
+            minimum_communication_count=minimum_communication_count,
+            maximum_communication_count=maximum_communication_count,
+            average_communication_count=average_communication_count,
         ),
     )
