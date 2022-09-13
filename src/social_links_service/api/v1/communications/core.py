@@ -11,7 +11,7 @@ from ....codegen.models import (
     Statistics,
     UserIDs,
 )
-from ....external.postgres import Engine
+from ....db.postgres import Engine
 
 
 async def send_communication_controller(body: Communication, engine: Engine) -> SendCommunicationResponse:

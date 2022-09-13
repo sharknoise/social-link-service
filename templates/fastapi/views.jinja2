@@ -1,6 +1,6 @@
 {{ imports }}
 from fastapi import Depends
-from ..external.postgres import get_engine, Engine
+from ..db.postgres import get_engine, Engine
 from .main import app
 {% for operation in operations %}
 from ..api.v1.communications.core import {{ operation.function_name }}_controller

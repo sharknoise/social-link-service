@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      ./.env
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - local
+  db:
+    image: "postgres"
+    # volumes:
+    #   - ./data/db:/var/lib/postgresql/data
+    # ports:
+    #   - "6432:6432"
+    environment:
+      - POSTGRES_USER="test_user"
+      - POSTGRES_PASSWORD="test"
+      - POSTGRES_DATABASE="test"
+    networks:
+      - local
+
+networks:
+  local:
+    driver: bridge
+    name: compose-network
